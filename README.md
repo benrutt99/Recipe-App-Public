@@ -1,4 +1,4 @@
-# Application for keeping track of personal recipes.
+# Application for keeping track of personal recipes. [https://recipebook.aboutbenrutt.com]
 
 I developed a digital cookbook that simplifies tracking for my personal cooking recipes. This platform empowers users to effortlessly manage their recipes by offering a comprehensive range of functionalities, including the ability to seamlessly add, edit, delete, and search through existing recipes with ease. Leveraging the Next.js 18 framework with React, I created a seamless and lightning-fast user interface. To streamline routing and my REST API, I utilized the advanced features of Next.js. For the back-end, I implemented MongoDB with Mongoose to ensure a robust and scalable architecture.
 
