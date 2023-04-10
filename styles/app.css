@@ -22,3 +22,35 @@ body {
 .mr-1 {
   margin-right: 5px;
 }
+
+.notification-container {
+  font-size: 14px;
+  box-sizing: border-box;
+  position: fixed;
+  width: 200px;
+  max-height: 100px;
+  display: flex;
+  justify-content: center;
+  top: 0; /* start position */
+  right: 0;
+  background-color: green;
+  border-radius: 0 0 0 8px;
+  color: white;
+  animation-name: slide-up;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; /* maintain end state */
+}
+
+.notification-message {
+  font-size: 20px;
+}
+
+@keyframes slide-up {
+  from {
+    top: -50px;
+  }
+  to {
+    top: 0;
+  }
+}

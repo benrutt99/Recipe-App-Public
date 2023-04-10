@@ -1,22 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import RecipeIngredientEdit from "./RecipeIngredientEdit";
 import AuthorEdit from "./AuthorEdit";
 import { RecipeContext } from "@/pages";
 
 export default function RecipeEdit({ recipe }) {
   //**CONTEXT**//
-  const { handleRecipeChange, handleRecipeSelect } = useContext(RecipeContext);
+  const { handleRecipeChange, saveRecipe } = useContext(RecipeContext);
 
   //**HANDLE CHANGE HELPER FUNCTION**//
   function handleChange(changes) {
     handleRecipeChange(recipe._id, { ...recipe, ...changes });
+    //console.log(recipe);
   }
 
   //**HANDLE INGREDIENT CHANGE**//
-  function handleIngredientChange(id, ingredient) {
+  function handleIngredientChange(idx, ingredient) {
     const newIngredients = [...recipe.ingredients];
-    const index = newIngredients.findIndex((i) => i._id === id);
-    newIngredients[index] = ingredient;
+    newIngredients[idx] = ingredient;
     handleChange({ ingredients: newIngredients });
   }
 
@@ -30,18 +30,17 @@ export default function RecipeEdit({ recipe }) {
   }
 
   //**HANDLE INGREDIENT DELETE**//
-  function handleIngredientDelete(id) {
+  function handleIngredientDelete(idx) {
     handleChange({
-      ingredients: recipe.ingredients.filter((i) => i._id !== id),
+      ingredients: recipe.ingredients.filter((_, index) => index !== idx),
     });
   }
 
   //**HANDLE AUTHOR CHANGE**//
-  function handleAuthorChange(id, author) {
-    //create a new array of recipe authors (can't change original)
+  function handleAuthorChange(idx, author) {
     const newAuthors = [...recipe.authors];
-    const index = newAuthors.findIndex((a) => a._id === id);
-    newAuthors[index] = author;
+
+    newAuthors[idx] = author;
     handleChange({ authors: newAuthors });
   }
 
@@ -54,20 +53,32 @@ export default function RecipeEdit({ recipe }) {
   }
 
   //**HANDLE AUTHOR DELETE**//
-  function handleAuthorDelete(id) {
-    handleChange({ authors: recipe.authors.filter((a) => a._id !== id) });
+  function handleAuthorDelete(idx) {
+    handleChange({
+      authors: recipe.authors.filter((_, index) => index !== idx),
+    });
   }
+
+  const handleServings = (input) => {
+    const value = input.replace(/\D/g, "");
+    handleChange({ servings: value });
+  };
 
   return (
     <div className='recipe-edit'>
-      <div className='recipe-edit__remove-button-container'>
+      <div className='save--btn-container'>
+        <button className='btn btn--save' onClick={() => saveRecipe()}>
+          Save Recipe
+        </button>
+      </div>
+      {/* <div className='recipe-edit__remove-button-container'>
         <button
           className='btn recipe-edit__remove-button'
           onClick={() => handleRecipeSelect(undefined)}
         >
           &times;
         </button>
-      </div>
+      </div> */}
       <div className='recipe-edit__details-grid'>
         <label htmlFor='name' className='recipe-edit__label'>
           Name
@@ -77,7 +88,7 @@ export default function RecipeEdit({ recipe }) {
           name='name'
           id='name'
           className='recipe-edit__input'
-          value={recipe.name}
+          value={recipe?.name}
           onChange={(e) => handleChange({ name: e.target.value })}
         />
 
@@ -86,10 +97,10 @@ export default function RecipeEdit({ recipe }) {
         </label>
         <input
           type='text'
-          name='name'
+          name='cookTime'
           id='cookTime'
           className='recipe-edit__input'
-          value={recipe.cookTime}
+          value={recipe?.cookTime}
           onChange={(e) => handleChange({ cookTime: e.target.value })}
         />
 
@@ -98,14 +109,12 @@ export default function RecipeEdit({ recipe }) {
         </label>
         <input
           type='number'
-          min='1'
-          name='name'
-          id='same'
+          name='servings'
+          id='servings'
+          min={1}
           className='recipe-edit__input'
-          value={recipe.servings}
-          onChange={(e) =>
-            handleChange({ servings: parseInt(e.target.value) || "" })
-          }
+          value={recipe?.servings}
+          onChange={(e) => handleServings(e.target.value)}
         />
 
         <label htmlFor='instructions' className='recipe-edit__label'>
@@ -116,7 +125,7 @@ export default function RecipeEdit({ recipe }) {
           id='instructions'
           className='recipe-edit__input'
           onChange={(e) => handleChange({ instructions: e.target.value })}
-          value={recipe.instructions}
+          value={recipe?.instructions}
         ></textarea>
       </div>
       <br />
@@ -125,9 +134,10 @@ export default function RecipeEdit({ recipe }) {
         <div>Name</div>
         <div>Amount</div>
         <div></div>
-        {recipe.ingredients.map((ingredient, index) => (
+        {recipe.ingredients.map((ingredient, idx) => (
           <RecipeIngredientEdit
-            key={index}
+            key={idx}
+            idx={idx}
             handleIngredientChange={handleIngredientChange}
             ingredient={ingredient}
             handleIngredientDelete={handleIngredientDelete}
@@ -141,13 +151,13 @@ export default function RecipeEdit({ recipe }) {
       </div>
       <br />
       {/* Author */}
-      <div>
-        <div>Author(s)</div>
-      </div>
-      <div>
-        {recipe.authors.map((author, index) => (
+
+      <div className='recipe-edit__author-grid'>
+        <div>Authors</div>
+        {recipe.authors.map((author, idx) => (
           <AuthorEdit
-            key={index}
+            key={idx}
+            idx={idx}
             author={author}
             handleAuthorChange={handleAuthorChange}
             handleAuthorDelete={handleAuthorDelete}

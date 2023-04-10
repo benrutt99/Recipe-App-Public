@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const RecipeSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   servings: {
     type: Number,
-    required: true,
+    required: false,
   },
   cookTime: {
     type: String,

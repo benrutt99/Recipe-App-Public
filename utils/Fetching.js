@@ -46,6 +46,7 @@ export async function updateSelectedRecipeFetch(selectedRecipe) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     }
+    console.log("saved recipe to db");
   } catch (error) {
     console.error("Error updating recipe:", error);
   }

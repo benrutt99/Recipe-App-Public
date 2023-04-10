@@ -4,10 +4,12 @@ export default function RecipeIngredientEdit({
   ingredient,
   handleIngredientChange,
   handleIngredientDelete,
+  idx,
 }) {
   //**HANDLE CHANGE HELPER FUNCTION**//
   function handleChange(changes) {
-    handleIngredientChange(ingredient._id, { ...ingredient, ...changes });
+    //console.log(changes);
+    handleIngredientChange(idx, { ...ingredient, ...changes });
   }
 
   return (
@@ -25,7 +27,7 @@ export default function RecipeIngredientEdit({
         onChange={(e) => handleChange({ amount: e.target.value })}
       />
       <button
-        onClick={() => handleIngredientDelete(ingredient._id)}
+        onClick={() => handleIngredientDelete(idx)}
         className='btn btn--danger'
       >
         &times;

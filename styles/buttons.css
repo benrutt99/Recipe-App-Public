@@ -22,8 +22,19 @@
 .btn--danger {
   color: white;
   background-color: hsl(0, 100%, 50%);
+  max-width: 100px;
 }
 
 .btn--danger:hover {
   background-color: hsl(0, 100%, 35%);
+}
+
+.btn--save {
+  color: white;
+  background-color: hsl(129, 83%, 23%);
+  margin-bottom: 5px;
+}
+
+.btn--save:hover {
+  background-color: hsl(129, 83%, 30%);
 }
